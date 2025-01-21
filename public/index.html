@@ -76,6 +76,8 @@
             renderTable(inventory);
         });
 
+        // Assumption here that the inventory is limited in size
+        // For a much bigger databases (like in supply chain), handle pagination
         function renderTable(inventory) {
             const inventoryTableBody = document.getElementById('inventoryTable').getElementsByTagName('tbody')[0];
             inventoryTableBody.innerHTML = '';
@@ -102,6 +104,9 @@
             });
         });
 
+        // Assumption here that the inventory is limited in size
+        // For a much bigger databases (like in supply chain), optimize sorting
+        // https://www.w3schools.com/js/js_array_sort.asp
         function sortTable(column, order) {
             const response = fetch('/api/inventory')
                 .then(response => response.json())

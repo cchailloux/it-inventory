@@ -13,8 +13,8 @@ app.get('/api/inventory', (req: Request, res: Response) => {
 
     // most recent first
     // TO IMPROVE - not efficient
-  const sortedInventory = inventory.sort((a, b) => b.dateOfPurchase.getTime() - a.dateOfPurchase.getTime())
-  res.json(sortedInventory);
+  // const sortedInventory = inventory.sort((a, b) => b.dateOfPurchase.getTime() - a.dateOfPurchase.getTime())
+  res.json(inventory);
 });
 
 app.get('/api/resource', (req: Request, res: Response) => {
