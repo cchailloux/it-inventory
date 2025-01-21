@@ -15,7 +15,23 @@
 </head>
 
 <body>
-    <h1>Devices Inventory</h1>
+    <h1>Manage all company's devices</h1>
+    <h2>Add a device</h2>
+    <!-- Question: should all of the info be required ? -->
+    <!-- type="numeric" is better for mobile than "number" (+ no spinners)-->
+    <form id="addDeviceForm">
+        <label for="computerName">Computer Name:</label>
+        <input type="text" id="computerName" name="computerName" required><br>
+        <label for="dateOfPurchase">Date of Purchase:</label>
+        <input type="date" id="dateOfPurchase" name="dateOfPurchase" required><br>
+        <label for="priceOfPurchase">Price of Purchase (in euros €):</label>
+        <input type="numeric" id="priceOfPurchase" name="priceOfPurchase" required><br>
+        <label for="annualElectricalConsumption">Electrical Consumption (in kWh per year):</label>
+        <input type="numeric" id="annualElectricalConsumption" name="annualElectricalConsumption" required><br>
+        <button type="submit">Add Device</button>
+    </form>
+
+    <h2>Devices Inventory</h2>
     <button id="loadInventory">Load Inventory</button>
     <table id="inventoryTable" border="1">
         <thead>
@@ -33,6 +49,27 @@
     </table>
 
     <script>
+
+        document.getElementById('addDeviceForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const newDevice = {
+                computerName: formData.get('computerName'),
+                dateOfPurchase: formData.get('dateOfPurchase'),
+                priceOfPurchase: parseFloat(formData.get('priceOfPurchase')),
+                annualElectricalConsumption: parseFloat(formData.get('annualElectricalConsumption'))
+            };
+            await fetch('/api/resource', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newDevice)
+            });
+            event.target.reset();
+            document.getElementById('loadInventory').click();
+        });
+
         document.getElementById('loadInventory').addEventListener('click', async () => {
             const response = await fetch('/api/inventory');
             const inventory = await response.json();
