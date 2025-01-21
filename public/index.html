@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+</html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Devices Inventory</title>
+    <style>
+        th {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Devices Inventory</h1>
+    <button id="loadInventory">Load Inventory</button>
+    <table id="inventoryTable" border="1">
+        <thead>
+            <tr>
+                <th data-column="computerName" data-order="desc">Computer Name</th>
+                <th data-column="dateOfPurchase" data-order="desc">Date of Purchase</th>
+                <th data-column="priceOfPurchase" data-order="desc">Price of Purchase (€)</th>
+                <th data-column="annualElectricalConsumption" data-order="desc">Annual Electrical Consumption (kWh)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Inventory data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('loadInventory').addEventListener('click', async () => {
+            const response = await fetch('/api/inventory');
+            const inventory = await response.json();
+            renderTable(inventory);
+        });
+
+        function renderTable(inventory) {
+            const inventoryTableBody = document.getElementById('inventoryTable').getElementsByTagName('tbody')[0];
+            inventoryTableBody.innerHTML = '';
+            inventory.forEach(computer => {
+                const row = inventoryTableBody.insertRow();
+                const cellName = row.insertCell(0);
+                const cellDate = row.insertCell(1);
+                const cellPrice = row.insertCell(2);
+                const cellConsumption = row.insertCell(3);
+                cellName.textContent = computer.computerName;
+                cellDate.textContent = new Date(computer.dateOfPurchase).toLocaleDateString();
+                cellPrice.textContent = computer.priceOfPurchase.toString();
+                cellConsumption.textContent = computer.annualElectricalConsumption.toString();
+            });
+        }
+
+        document.querySelectorAll('th').forEach(header => {
+            header.addEventListener('click', () => {
+                const column = header.getAttribute('data-column');
+                const order = header.getAttribute('data-order');
+                const newOrder = order === 'desc' ? 'asc' : 'desc';
+                header.setAttribute('data-order', newOrder);
+                sortTable(column, newOrder);
+            });
+        });
+
+        function sortTable(column, order) {
+            const response = fetch('/api/inventory')
+                .then(response => response.json())
+                .then(inventory => {
+                    const sortedInventory = inventory.sort((a, b) => {
+                        if (column === 'dateOfPurchase') {
+                            return order === 'asc' ? new Date(a[column]) - new Date(b[column]) : new Date(b[column]) - new Date(a[column]);
+                        } else if (typeof a[column] === 'number') {
+                            return order === 'asc' ? a[column] - b[column] : b[column] - a[column];
+                        } else {
+                            return order === 'asc' ? a[column].localeCompare(b[column]) : b[column].localeCompare(a[column]);
+                        }
+                    });
+                    renderTable(sortedInventory);
+                });
+        }
+    </script>
+</body>
+
+</html>
