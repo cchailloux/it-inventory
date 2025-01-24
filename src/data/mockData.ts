@@ -1,6 +1,7 @@
-import { ComputerInventory } from "./types";
+import { DeviceInventory } from "./types";
 
-export const inventory: ComputerInventory[] = [
+// *really* cheap mock data
+export const inventory: DeviceInventory[] = [
   {
     computerName: 'Computer1',
     dateOfPurchase: new Date('2020-01-01'),

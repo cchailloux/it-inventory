@@ -1,6 +1,5 @@
 # Context
-SOPHT technical interview
-https://sopht.com/
+Mock project for a technical interview at SOPHT - https://sopht.com/
 
 # App criteria
 

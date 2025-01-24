@@ -1,4 +1,4 @@
-export interface ComputerInventory {
+export interface DeviceInventory {
   computerName: string;
   dateOfPurchase: Date;
   priceOfPurchase: number; // in Euros

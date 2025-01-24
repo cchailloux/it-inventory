@@ -48,6 +48,9 @@
         </tbody>
     </table>
 
+    <h2>Devices Inventory</h2>
+    <button id="elecConsumption">Electricity Consumption</button>
+    <div id="elecConsumptionMonthly"></div>
     <script>
 
         document.getElementById('addDeviceForm').addEventListener('submit', async (event) => {
@@ -68,6 +71,12 @@
             });
             event.target.reset();
             document.getElementById('loadInventory').click();
+        });
+
+        document.getElementById('elecConsumption').addEventListener('click', async () => {
+            const response = await fetch('/api/consumption');
+            const consumption = await response.json();
+            console.log(consumption);
         });
 
         document.getElementById('loadInventory').addEventListener('click', async () => {
