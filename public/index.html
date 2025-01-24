@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-</html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +10,8 @@
             cursor: pointer;
         }
     </style>
+    <!-- Chart.js is one of the simplest JavaScript visualization library to make HTML-based charts.-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -24,9 +24,9 @@
         <input type="text" id="computerName" name="computerName" required><br>
         <label for="dateOfPurchase">Date of Purchase:</label>
         <input type="date" id="dateOfPurchase" name="dateOfPurchase" required><br>
-        <label for="priceOfPurchase">Price of Purchase (in euros €):</label>
+        <label for="priceOfPurchase">Price of Purchase (€):</label>
         <input type="numeric" id="priceOfPurchase" name="priceOfPurchase" required><br>
-        <label for="annualElectricalConsumption">Electrical Consumption (in kWh per year):</label>
+        <label for="annualElectricalConsumption">Annual Electrical Consumption (kWh):</label>
         <input type="numeric" id="annualElectricalConsumption" name="annualElectricalConsumption" required><br>
         <button type="submit">Add Device</button>
     </form>
@@ -48,11 +48,12 @@
         </tbody>
     </table>
 
-    <h2>Devices Inventory</h2>
-    <button id="elecConsumption">Electricity Consumption</button>
-    <div id="elecConsumptionMonthly"></div>
-    <script>
+    <h2>Monthly Electrical Spendings</h2>
+    <button id="elecConsumption">Calculate Total Electrical Consumption</button>
 
+    <canvas id="electricityChart" width="400" height="200"></canvas>
+
+    <script>
         document.getElementById('addDeviceForm').addEventListener('submit', async (event) => {
             event.preventDefault();
             const formData = new FormData(event.target);
@@ -76,7 +77,7 @@
         document.getElementById('elecConsumption').addEventListener('click', async () => {
             const response = await fetch('/api/consumption');
             const consumption = await response.json();
-            console.log(consumption);
+            renderChart(consumption);
         });
 
         document.getElementById('loadInventory').addEventListener('click', async () => {
@@ -86,7 +87,7 @@
         });
 
         // Assumption here that the inventory is limited in size
-        // For a much bigger databases (like in supply chain), handle pagination
+        // For a much bigger databases, TO DO handle pagination
         function renderTable(inventory) {
             const inventoryTableBody = document.getElementById('inventoryTable').getElementsByTagName('tbody')[0];
             inventoryTableBody.innerHTML = '';
@@ -100,6 +101,38 @@
                 cellDate.textContent = new Date(computer.dateOfPurchase).toLocaleDateString();
                 cellPrice.textContent = computer.priceOfPurchase.toString();
                 cellConsumption.textContent = computer.annualElectricalConsumption.toString();
+            });
+        }
+        let electricityChartInstance;
+
+        function renderChart(consumption) {
+            const ctx = document.getElementById('electricityChart').getContext('2d');
+            const labels = Object.keys(consumption);
+            const values = Object.values(consumption);
+
+            if (electricityChartInstance) {
+                electricityChartInstance.destroy();
+            }
+
+            electricityChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Monthly Electrical Spendings (kWh)',
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
             });
         }
 
