@@ -1,6 +1,9 @@
 # Context
 Mock project for a technical interview at SOPHT - https://sopht.com/
 
+# Run the app
+Run `npm start`
+
 # App criteria
 
 ## API

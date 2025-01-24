@@ -25,8 +25,7 @@ app.get('/api/consumption', (req: Request, res: Response) => {
     return accumulator + valeur.annualElectricalConsumption/12
     
     }, 0) */
-  electricityRecapByMonth();
-  res.json({ annual: 0 });;
+  res.json(electricityRecapByMonth(true));;
 });
 
 app.get('/api/resource', (req: Request, res: Response) => {
