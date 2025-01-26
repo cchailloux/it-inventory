@@ -5,61 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Devices Inventory</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- CSS key-in-hand sheet... in theory <link rel="stylesheet" href="https://unpkg.com/mvp.css"> -->
     <!-- Chart.js is one of the simplest JavaScript visualization library to make HTML-based charts.-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <header class="header" data-component="Header">
+    <header class="header" class="Header">
         <h1>Manage all company's devices</h1>
     </header>
 
+    <div class="container-element">
+        <div class="NewDevice">
+            <h2>Add a device</h2>
+            <!-- Question: should all of the info be required ? -->
+            <!-- type="numeric" is better for mobile than "number" (+ no spinners)-->
+            <form id="addDeviceForm" class="AddDeviceForm">
+                <label for="computerName">Computer Name:</label>
+                <input type="text" id="computerName" name="computerName" autocomplete="off" required><br>
+                <label for="dateOfPurchase">Date of Purchase:</label>
+                <input type="date" id="dateOfPurchase" name="dateOfPurchase" autocomplete="off" required><br>
+                <label for="priceOfPurchase">Price of Purchase (€):</label>
+                <input type="numeric" id="priceOfPurchase" name="priceOfPurchase" autocomplete="off" required><br>
+                <label for="annualElectricalConsumption">Annual Electrical Consumption (kWh):</label>
+                <input type="numeric" id="annualElectricalConsumption" name="annualElectricalConsumption"
+                    autocomplete="off" required><br>
+                <button type="submit">Add Device</button>
+            </form>
+        </div>
 
-    <div data-component="NewDevice">
-        <h2>Add a device</h2>
-        <!-- Question: should all of the info be required ? -->
-        <!-- type="numeric" is better for mobile than "number" (+ no spinners)-->
-        <form id="addDeviceForm" data-component="AddDeviceForm">
-            <label for="computerName">Computer Name:</label>
-            <input type="text" id="computerName" name="computerName" autocomplete="off" required><br>
-            <label for="dateOfPurchase">Date of Purchase:</label>
-            <input type="date" id="dateOfPurchase" name="dateOfPurchase" autocomplete="off" required><br>
-            <label for="priceOfPurchase">Price of Purchase (€):</label>
-            <input type="numeric" id="priceOfPurchase" name="priceOfPurchase" autocomplete="off" required><br>
-            <label for="annualElectricalConsumption">Annual Electrical Consumption (kWh):</label>
-            <input type="numeric" id="annualElectricalConsumption" name="annualElectricalConsumption" autocomplete="off"
-                required><br>
-            <button type="submit">Add Device</button>
-        </form>
-    </div>
+        <div class="Inventory">
+            <h2>Devices Inventory</h2>
+            <button id="loadInventory">Load Inventory</button>
+            <table id="inventoryTable" border="1">
+                <thead>
+                    <tr>
+                        <th data-column="computerName" data-order="desc">Computer Name</th>
+                        <th data-column="dateOfPurchase" data-order="desc">Date of Purchase</th>
+                        <th data-column="priceOfPurchase" data-order="desc">Price of Purchase (€)</th>
+                        <th data-column="annualElectricalConsumption" data-order="desc">Annual Electrical Consumption
+                            (kWh)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Inventory data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
 
-    <div data-component="Inventory">
-        <h2>Devices Inventory</h2>
-        <button id="loadInventory">Load Inventory</button>
-        <table id="inventoryTable" border="1">
-            <thead>
-                <tr>
-                    <th data-column="computerName" data-order="desc">Computer Name</th>
-                    <th data-column="dateOfPurchase" data-order="desc">Date of Purchase</th>
-                    <th data-column="priceOfPurchase" data-order="desc">Price of Purchase (€)</th>
-                    <th data-column="annualElectricalConsumption" data-order="desc">Annual Electrical Consumption
-                        (kWh)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Inventory data will be inserted here -->
-            </tbody>
-        </table>
-    </div>
+        <div class="ElectricitySpending">
 
-    <div data-component="ElectricitySpending">
+            <h2>Monthly Electrical Spendings</h2>
+            <button id="elecConsumption">Calculate Total Electrical Consumption</button>
 
-        <h2>Monthly Electrical Spendings</h2>
-        <button id="elecConsumption">Calculate Total Electrical Consumption</button>
-
-        <canvas id="electricityChart" width="400" height="200"></canvas>
+            <canvas id="electricityChart" width="400" height="200"></canvas>
+        </div>
     </div>
 
     <!-- TO DO - purchase spending of the last 12 months -->
