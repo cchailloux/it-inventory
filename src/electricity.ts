@@ -1,4 +1,5 @@
 import { getAllDevices } from "./data/inventory";
+import { DeviceInventory } from "./data/types";
 
 const generateYearMonthPairs = (startDate: Date, endDate: Date): string[] => {
   const yearMonthPairs: string[] = [];
@@ -23,20 +24,19 @@ const generateYearMonthPairs = (startDate: Date, endDate: Date): string[] => {
  * Sums monthly electricity consumption for all devices
  * for all months where it's relevant - aka between now and oldest purchase
  */
-export const electricityRecapByMonth = (mustRound?: boolean): { [month: string]: number } => {
+export const electricityRecapByMonth = (allDevices: DeviceInventory[], mustRound?: boolean): { [month: string]: number } => {
     const todayDate = new Date();
     const monthElecDic: {[month: string]: number} = {}
-    const allDevices = getAllDevices();
 
     allDevices.forEach((device) => {
-    const monthlyConsumption = device.annualElectricalConsumption / 12;
-    const yearMonthPairs = generateYearMonthPairs(device.dateOfPurchase, todayDate);
+      const monthlyConsumption = device.annualElectricalConsumption / 12;
+      const yearMonthPairs = generateYearMonthPairs(device.dateOfPurchase, todayDate);
 
-    yearMonthPairs.forEach((yearMonthPair: string) => {
+      yearMonthPairs.forEach((yearMonthPair: string) => {
         monthElecDic[yearMonthPair]
             ? monthElecDic[yearMonthPair] += monthlyConsumption
             : monthElecDic[yearMonthPair] = monthlyConsumption;
-    })
+      })
     })
 
     if (mustRound) {

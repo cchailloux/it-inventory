@@ -20,12 +20,7 @@ app.get('/api/inventory', (req: Request, res: Response) => {
 
 app.get('/api/consumption', (req: Request, res: Response) => {
   const currentDate = new Date()
-/*   const annualConsumption = inventory.reduce((accumulator, valeur) => {
-    // First iteration: assume a device consumes the whole month - even when bought the 29th
-    return accumulator + valeur.annualElectricalConsumption/12
-    
-    }, 0) */
-  res.json(electricityRecapByMonth(true));;
+  res.json(electricityRecapByMonth(getAllDevices(), true));;
 });
 
 app.get('/api/resource', (req: Request, res: Response) => {

@@ -14,19 +14,19 @@ export const inventory: DeviceInventory[] = [
     priceOfPurchase: 1500,
     annualElectricalConsumption: 250
   },
-    {
+  {
     computerName: 'Computer3',
     dateOfPurchase: new Date('2021-06-15'),
     priceOfPurchase: 2000,
     annualElectricalConsumption: 223
   },
-    {
+  {
     computerName: 'Computer4',
     dateOfPurchase: new Date('2024-01-21'),
     priceOfPurchase: 1000.12,
     annualElectricalConsumption: 400
   },
-      {
+  {
     computerName: 'Computer5',
     dateOfPurchase: new Date('2023-01-21'),
     priceOfPurchase: 1234,
